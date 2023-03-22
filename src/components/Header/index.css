@@ -1,0 +1,52 @@
+.nav-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2c364c;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 40px;
+  padding-left: 40px;
+  height: 10vh;
+}
+
+.logo-header {
+  width: 80px;
+  height: 22px;
+}
+
+.nav-link {
+  text-decoration: none;
+  margin-right: 2px;
+  cursor: pointer;
+  outline: none;
+}
+
+.list-item {
+  list-style-type: none;
+  color: #f1f5f9;
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 14px;
+}
+
+.link-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  background-color: #4f46e5;
+  border-radius: 4px;
+  border-width: 0px;
+  font-family: 'Roboto';
+  font-size: 12px;
+  line-height: 1px;
+  height: 24px;
+  color: #ffffff;
+  font-weight: 500;
+}
