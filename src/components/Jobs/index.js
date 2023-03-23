@@ -4,7 +4,7 @@ import {BsSearch} from 'react-icons/bs'
 import Loader from 'react-loader-spinner'
 import Header from '../Header'
 import FilterGroup from '../FilterGroup'
-import JobItemDetails from '../JobItemDetails'
+import NewJobCard from '../NewJobCard'
 import './index.css'
 
 const apiStatusCondition = {
@@ -118,7 +118,7 @@ class Jobs extends Component {
     return (
       <ul className="job-list-container">
         {jobsList.map(job => (
-          <JobItemDetails jobDetails={job} key={job.id} />
+          <NewJobCard jobDetails={job} key={job.id} />
         ))}
       </ul>
     )
