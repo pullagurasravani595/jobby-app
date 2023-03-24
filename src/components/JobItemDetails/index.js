@@ -1,6 +1,7 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
 import Header from '../Header'
+import JobDetails from '../JobDetails'
 import './index.css'
 
 const apiStatusConstraints = {
@@ -11,7 +12,12 @@ const apiStatusConstraints = {
 }
 
 class JobItemDetails extends Component {
-  state = {jobItemDetailsObj: [], apiStatus: apiStatusConstraints.initial}
+  state = {
+    jobItemDetailsObj: [],
+    apiStatus: apiStatusConstraints.initial,
+    newJobDetails: [],
+    LifeAtCompanyObj: [],
+  }
 
   componentDidMount() {
     this.getJobItemDetails()
@@ -19,6 +25,7 @@ class JobItemDetails extends Component {
 
   getJobItemDetails = async () => {
     this.setState({apiStatus: apiStatusConstraints.inProgress})
+
     const jwtToken = Cookies.get('jwt_token')
     const {match} = this.props
     const {params} = match
@@ -51,49 +58,58 @@ class JobItemDetails extends Component {
         })),
       }
 
+      const {jobDetails} = updateData
+
+      const newObject = {
+        companyLogoUrl: jobDetails.company_logo_url,
+        companyWebsiteUrl: jobDetails.company_website_url,
+        employmentType: jobDetails.employment_type,
+        id: jobDetails.id,
+        jobDescription: jobDetails.job_description,
+        LifeAtCompany: jobDetails.life_at_company,
+        location: jobDetails.location,
+        packagePerAnnum: jobDetails.package_per_annum,
+        rating: jobDetails.rating,
+        skills: jobDetails.skills.map(eachSkill => ({
+          imageUrl: eachSkill.image_url,
+          name: eachSkill.name,
+        })),
+        title: jobDetails.title,
+      }
+
+      const {LifeAtCompany} = newObject
+
+      const lifeEnvironmentCompany = {
+        description: LifeAtCompany.description,
+        imageUrl: LifeAtCompany.image_url,
+      }
+
       this.setState({
         apiStatus: apiStatusConstraints.success,
         jobItemDetailsObj: updateData,
+        newJobDetails: newObject,
+        LifeAtCompanyObj: lifeEnvironmentCompany,
       })
     } else {
       this.setState({apiStatus: apiStatusConstraints.failure})
     }
   }
 
-  renderJobItemDetailsDisplay = () => {
-    const {jobItemDetailsObj} = this.state
-    const {jobDetails} = jobItemDetailsObj
-    const updateJobDetails = {
-      companyLogoUrl: jobDetails.company_logo_url,
-      companyWebsiteUrl: jobDetails.company_website_url,
-      id: jobDetails.id,
-      jobDescription: jobDetails.job_description,
-      lifeAtCompany: jobDetails.life_at_company,
-      location: jobDetails.location,
-      packagePerAnnum: jobDetails.package_per_annum,
-      rating: jobDetails.rating,
-      skills: jobDetails.skills,
-    }
+  renderJobDetailsView = () => {
+    const {newJobDetails} = this.state
 
-    console.log(updateJobDetails)
-    return (
-      <div>
-        <p className="heading">dfgh</p>
-      </div>
-    )
+    return <JobDetails itemDetails={newJobDetails} />
   }
 
   render() {
-    const {jobItemDetailsObj} = this.state
-    const {jobDetails} = jobItemDetailsObj
+    const {jobItemDetailsObj, newJobDetails, LifeAtCompanyObj} = this.state
+    console.log(newJobDetails)
 
     return (
       <div>
         <Header />
         <div className="banner-container">
-          <div className="item-container">
-            {this.renderJobItemDetailsDisplay()}
-          </div>
+          <div className="item-container">{this.renderJobDetailsView()}</div>
         </div>
       </div>
     )
