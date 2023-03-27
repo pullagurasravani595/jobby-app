@@ -1,3 +1,7 @@
+* {
+  font-family: 'Roboto';
+}
+
 .company-logo-title-container {
   display: flex;
   flex-direction: row;
@@ -55,7 +59,7 @@
   color: #f1f5f9;
 }
 
-.employment-container {
+.employment-container-job {
   display: flex;
   flex-direction: row;
 }
@@ -92,4 +96,86 @@
 .list-container {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 152px;
+  list-style-type: none;
+  margin-bottom: 30px;
+}
+
+.skill-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.skill-img {
+  width: 45px;
+  height: 45px;
+  margin-right: 24px;
+}
+
+.skill-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.life-at-company-heading {
+  color: #f8fafc;
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.life-at-company-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.life-at-company-description {
+  font-size: 18px;
+  font-family: 'Roboto';
+  color: #ffffff;
+  padding-top: 26px;
+}
+
+.item-container {
+  background-color: #202020;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 25px;
+  padding-left: 16px;
+  padding-right: 14px;
+  padding-bottom: 15px;
+  margin-left: 45px;
+}
+
+.description-link-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visit-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.anchor-element {
+  text-decoration: none;
+}
+
+.visit-heading {
+  color: #4f46e5;
+  font-size: 18px;
+  font-weight: 500;
+  margin-right: 6px;
 }

@@ -18,9 +18,10 @@ class Jobs extends Component {
   state = {
     jobsList: [],
     apiStatus: apiStatusCondition.initial,
-    jobType: '',
+    jobType: [],
     jobSalary: '',
     searchInput: '',
+    jobStr: '',
   }
 
   componentDidMount() {
@@ -31,9 +32,9 @@ class Jobs extends Component {
     this.setState({apiStatus: apiStatusCondition.inProgress})
 
     const jwtToken = Cookies.get('jwt_token')
-    const {jobType, jobSalary, searchInput} = this.state
+    const {jobStr, jobSalary, searchInput} = this.state
 
-    const url = `https://apis.ccbp.in/jobs?employment_type=${jobType}&minimum_package=${jobSalary}&search=${searchInput}`
+    const url = `https://apis.ccbp.in/jobs?employment_type=${jobStr}&minimum_package=${jobSalary}&search=${searchInput}`
     const options = {
       method: 'GET',
       headers: {
@@ -70,6 +71,10 @@ class Jobs extends Component {
   onClickSearchIcon = () => {
     const {searchInput} = this.state
     this.setState({searchInput}, this.getJobsDetails)
+  }
+
+  clickRetryJobBtn = () => {
+    this.getJobsDetails()
   }
 
   renderInputContainer = () => {
@@ -135,7 +140,7 @@ class Jobs extends Component {
       <p className="failure-description">
         We cannot seem to find the page you are looking for
       </p>
-      <button type="button" className="button">
+      <button type="button" className="button" onClick={this.clickRetryJobBtn}>
         Retry
       </button>
     </div>
@@ -162,8 +167,12 @@ class Jobs extends Component {
     }
   }
 
-  updatedEmploymentType = jobType => {
-    this.setState({jobType}, this.getJobsDetails)
+  updatedEmploymentType = jobTypeVal => {
+    const {jobType} = this.state
+    this.setState(prevState => ({
+      jobType: [...prevState.jobType, jobTypeVal].join(','),
+    }))
+    this.setState({jobStr: jobType.join(',')}, this.getJobsDetails)
   }
 
   updatedSalaryType = jobSalary => {
@@ -172,6 +181,9 @@ class Jobs extends Component {
 
   render() {
     const {employmentTypesList, salaryRangesList} = this.props
+    const {jobType, jobStr} = this.state
+    console.log(jobType)
+    console.log(jobStr)
 
     return (
       <>

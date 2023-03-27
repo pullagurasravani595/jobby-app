@@ -104,12 +104,12 @@ class FilterGroup extends Component {
       const clickCheckBox = () => updatedEmploymentType(employmentTypeId)
 
       return (
-        <li className="list-container">
+        <li className="list-container-filter" key={employmentTypeId}>
           <input
             type="checkbox"
             id="myCheckbox"
             className="input-checkbox"
-            onClick={clickCheckBox}
+            onChange={clickCheckBox}
           />
           <label htmlFor="myCheckbox" className="label-element">
             {label}
@@ -127,14 +127,17 @@ class FilterGroup extends Component {
       const clickRadioBtn = () => updatedSalaryType(salaryRangeId)
 
       return (
-        <li className="list-container">
+        <li className="list-container-filter" key={salaryRangeId}>
           <input
             type="radio"
             className="radiobox"
             onChange={clickRadioBtn}
             name="salary"
+            id="myRadio"
           />
-          <label className="label-element">{label}</label>
+          <label className="label-element" htmlFor="myRadio">
+            {label}
+          </label>
         </li>
       )
     })
@@ -143,7 +146,7 @@ class FilterGroup extends Component {
   renderSalaryRangeDisplay = () => (
     <>
       <h1 className="employment-heading">Salary Range</h1>
-      <ul className="employment-container">{this.renderSalaryList()}</ul>
+      <ul className="employment-container-list">{this.renderSalaryList()}</ul>
     </>
   )
 

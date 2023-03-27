@@ -75,16 +75,15 @@
   color: #ffffff;
   font-size: 13px;
   font-family: 'Roboto';
-  margin-left: 8px;
 }
 
-.list-Container {
+.list-Container-filter {
   list-style-type: none;
   margin-bottom: 8px;
 }
 
-.employment-container {
-  padding-left: 0px;
+.employment-container-list {
+  padding-left: 0;
   display: flex;
   flex-direction: column;
 }

@@ -1,5 +1,9 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
+import Loader from 'react-loader-spinner'
+import {AiFillStar} from 'react-icons/ai'
+import {ImLocation} from 'react-icons/im'
+import {BsFillBriefcaseFill} from 'react-icons/bs'
 import Header from '../Header'
 import JobDetails from '../JobDetails'
 import './index.css'
@@ -16,7 +20,7 @@ class JobItemDetails extends Component {
     jobItemDetailsObj: [],
     apiStatus: apiStatusConstraints.initial,
     newJobDetails: [],
-    LifeAtCompanyObj: [],
+    lifeAtCompanyList: [],
   }
 
   componentDidMount() {
@@ -66,7 +70,7 @@ class JobItemDetails extends Component {
         employmentType: jobDetails.employment_type,
         id: jobDetails.id,
         jobDescription: jobDetails.job_description,
-        LifeAtCompany: jobDetails.life_at_company,
+        lifeAtCompany: jobDetails.life_at_company,
         location: jobDetails.location,
         packagePerAnnum: jobDetails.package_per_annum,
         rating: jobDetails.rating,
@@ -77,18 +81,18 @@ class JobItemDetails extends Component {
         title: jobDetails.title,
       }
 
-      const {LifeAtCompany} = newObject
+      const {lifeAtCompany} = newObject
 
       const lifeEnvironmentCompany = {
-        description: LifeAtCompany.description,
-        imageUrl: LifeAtCompany.image_url,
+        description: lifeAtCompany.description,
+        imageUrl: lifeAtCompany.image_url,
       }
 
       this.setState({
         apiStatus: apiStatusConstraints.success,
         jobItemDetailsObj: updateData,
         newJobDetails: newObject,
-        LifeAtCompanyObj: lifeEnvironmentCompany,
+        lifeAtCompanyList: lifeEnvironmentCompany,
       })
     } else {
       this.setState({apiStatus: apiStatusConstraints.failure})
@@ -96,21 +100,132 @@ class JobItemDetails extends Component {
   }
 
   renderJobDetailsView = () => {
-    const {newJobDetails} = this.state
+    const {newJobDetails, lifeAtCompanyList} = this.state
 
-    return <JobDetails itemDetails={newJobDetails} />
+    return (
+      <JobDetails
+        itemDetails={newJobDetails}
+        lifeAtCompanyDetailsList={lifeAtCompanyList}
+      />
+    )
+  }
+
+  clickRetryButton = () => {
+    this.getJobItemDetails()
+  }
+
+  renderSimilarJobsView = () => {
+    const {jobItemDetailsObj} = this.state
+    const {similarJobs} = jobItemDetailsObj
+
+    return (
+      <div className="similar-job-container">
+        <h1 className="similar-job-heading">Similar Jobs</h1>
+        <ul className="similar-job-items-container">
+          {similarJobs.map(jobItem => {
+            const {
+              companyLogoUrl,
+              title,
+              rating,
+              jobDescription,
+              location,
+              employmentType,
+              id,
+            } = jobItem
+
+            return (
+              <li className="similar-job-list-container" key={id}>
+                <div className="similar-job-logo-title-container">
+                  <img
+                    src={companyLogoUrl}
+                    alt="similar job company logo"
+                    className="similar-jobs-logo"
+                  />
+                  <div>
+                    <h1 className="similar-job-heading">{title}</h1>
+                    <div className="similar-job-rating-container">
+                      <AiFillStar className="similar-jobs-star-icon" />
+                      <p className="similar-job-rating">{rating}</p>
+                    </div>
+                  </div>
+                </div>
+                <h1 className="similar-job-description">Description</h1>
+                <p className="similar-job-description-heading">
+                  {jobDescription}
+                </p>
+                <div className="similar-job-location-employment-container">
+                  <div className="similar-job-location-container">
+                    <ImLocation className="similar-job-location-icon" />
+                    <p className="similar-job-location-icon">{location}</p>
+                  </div>
+                  <div className="similar-job-location-container">
+                    <BsFillBriefcaseFill className="similar-job-location-icon" />
+                    <p className="similar-job-location-icon">
+                      {employmentType}
+                    </p>
+                  </div>
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    )
+  }
+
+  renderSuccessViewJobItem = () => (
+    <>
+      {this.renderJobDetailsView()}
+      {this.renderSimilarJobsView()}
+    </>
+  )
+
+  renderFailureViewJobItem = () => (
+    <div className="job-item-failure-container">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
+        alt="failure view"
+      />
+      <h1 className="failure-heading-job-item">Oops! Something Went Wrong</h1>
+      <p className="failure-description-job-item">
+        We cannot seem to find the page you are looking for
+      </p>
+      <button
+        type="button"
+        className="button-btn"
+        onClick={this.clickRetryButton}
+      >
+        Retry
+      </button>
+    </div>
+  )
+
+  renderLoaderViewJobItem = () => (
+    <div className="loader-container" data-testid="loader">
+      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
+    </div>
+  )
+
+  renderResponseDetails = () => {
+    const {apiStatus} = this.state
+
+    switch (apiStatus) {
+      case apiStatusConstraints.success:
+        return this.renderSuccessViewJobItem()
+      case apiStatusConstraints.failure:
+        return this.renderFailureViewJobItem()
+      case apiStatusConstraints.inProgress:
+        return this.renderLoaderViewJobItem()
+      default:
+        return null
+    }
   }
 
   render() {
-    const {jobItemDetailsObj, newJobDetails, LifeAtCompanyObj} = this.state
-    console.log(newJobDetails)
-
     return (
       <div>
         <Header />
-        <div className="banner-container">
-          <div className="item-container">{this.renderJobDetailsView()}</div>
-        </div>
+        <div className="banner-container">{this.renderResponseDetails()}</div>
       </div>
     )
   }
