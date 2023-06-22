@@ -170,9 +170,9 @@ class Jobs extends Component {
   updatedEmploymentType = jobTypeVal => {
     const {jobType} = this.state
     this.setState(prevState => ({
-      jobType: [...prevState.jobType, jobTypeVal].join(','),
+      jobType: [...prevState.jobType, jobTypeVal]
     }))
-    this.setState({jobStr: jobType.join(',')}, this.getJobsDetails)
+    this.setState({jobStr: jobType.join(",")}, this.getJobsDetails)
   }
 
   updatedSalaryType = jobSalary => {
